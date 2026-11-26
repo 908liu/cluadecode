@@ -1,0 +1,33 @@
+# Public deployment reverse proxy.
+# DOMAIN=kb.example.com  -> automatic HTTPS (ports 80/443 must reach this host)
+# DOMAIN=:80             -> plain HTTP, intended for local testing only
+{
+	admin off
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	# 50MB uploads plus multipart overhead.
+	request_body {
+		max_size 60MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+		-Server
+	}
+
+	reverse_proxy app:8000 {
+		# Overwrite (not append) so clients cannot spoof their rate-limit key.
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Real-IP {remote_host}
+		# SSE streaming for /api/v1/qa/ask/stream.
+		flush_interval -1
+	}
+}

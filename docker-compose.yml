@@ -1,0 +1,87 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mediknow-rag:latest
+    container_name: mediknow-rag
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      DATA_DIR: /app/data
+      DATABASE_PATH: /app/data/app.db
+      CHROMA_DIR: /app/data/chroma
+      AGENT_CHECKPOINT_PATH: /app/data/checkpoints.sqlite
+      ENCRYPTION_KEY_PATH: /app/data/.encryption_key
+      FRONTEND_DIST: /app/frontend/dist
+      TRUST_PROXY_HEADERS: "${TRUST_PROXY_HEADERS:-1}"
+      APP_SECRET: ${APP_SECRET:?APP_SECRET must be set in .env (openssl rand -hex 32)}
+      REGISTRATION_MODE: ${REGISTRATION_MODE:-first-user}
+      REGISTRATION_INVITE_CODE: ${REGISTRATION_INVITE_CODE:-}
+      BLOCK_PRIVATE_UPSTREAM: ${BLOCK_PRIVATE_UPSTREAM:-1}
+      MODEL_HOST_ALLOWLIST: ${MODEL_HOST_ALLOWLIST:-}
+    volumes:
+      - ${DATA_DIR_HOST:-./data}:/app/data
+    networks:
+      - appnet
+    # The app is only reachable through Caddy; never publish 8000.
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 512
+    mem_limit: ${APP_MEM_LIMIT:-1536m}
+    cpus: 2
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: mediknow-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN must be set in .env (e.g. kb.example.com, or :80 for local HTTP test)}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - appnet
+    depends_on:
+      app:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  caddy-data:
+  caddy-config:

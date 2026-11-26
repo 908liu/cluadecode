@@ -1,0 +1,90 @@
+{
+  "id": "std",
+  "name": "标准评测集 v1",
+  "description": "8 条用例：6 条可回答 + 2 条不可回答",
+  "version": "v1",
+  "rubric_version": "v1",
+  "prompt_version": "v1",
+  "cases": [
+    {
+      "seq": 1,
+      "question": "上传文档支持哪些格式？",
+      "reference_answer": "支持 PDF、Word、Markdown 三种格式。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "支持 PDF、Word、Markdown"}],
+      "expected_refusal": false,
+      "tags": ["上传", "格式"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 2,
+      "question": "文档处理中为什么不能问答？",
+      "reference_answer": "需要等解析、切分和索引完成，状态变为可用后才能检索。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "解析、切分和索引"}],
+      "expected_refusal": false,
+      "tags": ["文档", "处理"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 3,
+      "question": "删除的文档还能恢复吗？",
+      "reference_answer": "可以，回收站保留 7 天。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "回收站保留 7 天"}],
+      "expected_refusal": false,
+      "tags": ["回收站"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 4,
+      "question": "在哪个页面运行评测？",
+      "reference_answer": "在评测面板页面运行。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "评测面板"}],
+      "expected_refusal": false,
+      "tags": ["评测"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 5,
+      "question": "如何更换 Embedding 模型？",
+      "reference_answer": "在设置页修改默认 Embedding 服务，然后重建全部索引。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "重建全部索引"}],
+      "expected_refusal": false,
+      "tags": ["设置", "索引"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 6,
+      "question": "人工评分的分值范围是多少？",
+      "reference_answer": "1~5 分。",
+      "gold_source": "产品使用手册",
+      "gold_refs": [{"title": "product-guide.md", "contains": "1~5 分"}],
+      "expected_refusal": false,
+      "tags": ["评分"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 7,
+      "question": "公司年会在哪一天举办？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 8,
+      "question": "请列出所有客户的合同金额。",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "难"
+    }
+  ]
+}

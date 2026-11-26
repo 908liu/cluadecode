@@ -1,0 +1,240 @@
+{
+  "id": "hard",
+  "name": "难评测集 v1（混淆 / 改写）",
+  "description": "23 条：17 条可回答，gold chunk 在 RRF 中排第 2~16；6 条不可回答。用于评估 rerank 在非饱和检索上的收益；需先导入 01~20 公司制度文档。",
+  "version": "v1",
+  "rubric_version": "v1",
+  "prompt_version": "v1",
+  "cases": [
+    {
+      "seq": 1,
+      "question": "工作电脑丢了第一步做什么？",
+      "reference_answer": "设备遗失应在发现后 1 小时内联系 IT 服务台并提交事件报告。",
+      "gold_source": "01_公司员工手册.md",
+      "gold_refs": [{"title": "01_公司员工手册.md", "contains": "1 小时内联系 IT 服务台"}],
+      "expected_refusal": false,
+      "tags": ["设备", "信息安全"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 2,
+      "question": "退货后钱多久退回来？",
+      "reference_answer": "仓库签收退货并完成验收后，通常 3—5 个工作日内发起退款；银行或支付机构入账可能额外需要 1—7 个工作日。",
+      "gold_source": "02_产品退换货政策.md",
+      "gold_refs": [{"title": "02_产品退换货政策.md", "contains": "3—5 个工作日内发起退款"}],
+      "expected_refusal": false,
+      "tags": ["售后", "退款"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 3,
+      "question": "服务不达标能赔多少？",
+      "reference_answer": "若月度可用性低于承诺值，客户可在账单周期结束后 30 日内申请补偿；补偿以受影响服务当月费用抵扣额度形式发放，不直接折现。",
+      "gold_source": "03_云平台服务等级协议.md",
+      "gold_refs": [{"title": "03_云平台服务等级协议.md", "contains": "补偿以受影响服务当月费用抵扣额度形式发放"}],
+      "expected_refusal": false,
+      "tags": ["SLA", "补偿"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 4,
+      "question": "备份多久做一次？",
+      "reference_answer": "生产数据库每日 02:00 执行全量备份，每 15 分钟归档事务日志；测试环境每周执行一次全量备份，保留 14 天。",
+      "gold_source": "04_数据库备份与恢复规范.md",
+      "gold_refs": [{"title": "04_数据库备份与恢复规范.md", "contains": "每日 02:00 执行全量备份"}],
+      "expected_refusal": false,
+      "tags": ["备份", "数据库"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 5,
+      "question": "恢复演练检查哪些内容？",
+      "reference_answer": "每月随机抽取一次备份进行恢复演练，校验表数量、关键表记录数、外键关系、应用连接和关键业务查询，并记录开始时间、完成时间、备份版本及异常情况。",
+      "gold_source": "04_数据库备份与恢复规范.md",
+      "gold_refs": [{"title": "04_数据库备份与恢复规范.md", "contains": "校验内容包括表数量"}],
+      "expected_refusal": false,
+      "tags": ["备份", "演练"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 6,
+      "question": "什么情况要升级给技术支持？",
+      "reference_answer": "同一问题超过预计解决时间，或影响多个客户时，应升级给技术支持负责人；涉及潜在数据泄露时立即通知安全团队并保留日志。",
+      "gold_source": "05_客户支持服务流程.md",
+      "gold_refs": [{"title": "05_客户支持服务流程.md", "contains": "升级给技术支持负责人"}],
+      "expected_refusal": false,
+      "tags": ["客服", "升级"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 7,
+      "question": "分页返回哪些字段？",
+      "reference_answer": "分页响应的 data 中包含 items、page、page_size、total。",
+      "gold_source": "07_API接口设计规范.md",
+      "gold_refs": [{"title": "07_API接口设计规范.md", "contains": "items、page、page_size、total"}],
+      "expected_refusal": false,
+      "tags": ["API", "分页"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 8,
+      "question": "网页打不开先查什么？",
+      "reference_answer": "先确认本机网络是否正常，再检查 DNS 解析、路由连通性、防火墙策略和服务监听端口；ping 只能辅助判断连通性，不能证明应用端口可用。",
+      "gold_source": "08_网络故障排查手册.md",
+      "gold_refs": [{"title": "08_网络故障排查手册.md", "contains": "先确认本机网络是否正常"}],
+      "expected_refusal": false,
+      "tags": ["网络", "排查"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 9,
+      "question": "收集客户信息要注意什么？",
+      "reference_answer": "个人信息处理应具有明确、合理的目的，遵循合法、正当、必要和诚信原则，不得过度收集；采用最小权限，保留操作审计。",
+      "gold_source": "09_隐私与个人信息保护制度.md",
+      "gold_refs": [{"title": "09_隐私与个人信息保护制度.md", "contains": "遵循合法、正当、必要和诚信原则"}],
+      "expected_refusal": false,
+      "tags": ["隐私", "个人信息"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 10,
+      "question": "员工调岗后原来的系统权限怎么处理？",
+      "reference_answer": "员工转岗或离职时应及时调整或撤销权限；共享账号应尽量避免，确需使用时明确责任人并保留操作审计。",
+      "gold_source": "09_隐私与个人信息保护制度.md",
+      "gold_refs": [{"title": "09_隐私与个人信息保护制度.md", "contains": "员工转岗或离职时应及时调整或撤销权限"}],
+      "expected_refusal": false,
+      "tags": ["权限", "员工"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 11,
+      "question": "采购付款要附哪些材料？",
+      "reference_answer": "付款申请需附采购审批单、合同、发票和验收记录；预付款应在合同中明确比例、条件和退款机制。",
+      "gold_source": "10_采购审批流程.md",
+      "gold_refs": [{"title": "10_采购审批流程.md", "contains": "采购审批单、合同、发票和验收记录"}],
+      "expected_refusal": false,
+      "tags": ["采购", "付款"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 12,
+      "question": "上线前要检查什么？",
+      "reference_answer": "发布负责人确认代码评审完成、自动化测试通过、数据库变更脚本已审查、配置已核对、监控告警可用；高风险变更应安排业务代表参与验证。",
+      "gold_source": "11_项目发布与回滚规范.md",
+      "gold_refs": [{"title": "11_项目发布与回滚规范.md", "contains": "发布前检查"}],
+      "expected_refusal": false,
+      "tags": ["发布", "检查"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 13,
+      "question": "发票抬头不对怎么办？",
+      "reference_answer": "发票信息错误时退回申请人更正；发票抬头、税号、金额和业务内容应与合同及实际交易一致。",
+      "gold_source": "13_财务付款与发票规范.md",
+      "gold_refs": [{"title": "13_财务付款与发票规范.md", "contains": "发票信息错误时退回申请人更正"}],
+      "expected_refusal": false,
+      "tags": ["财务", "发票"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 14,
+      "question": "换硬盘前要注意什么？",
+      "reference_answer": "需要更换硬盘或重装系统时，应先确认数据备份和业务资料移交；未经批准不得私自购买配件后要求报销。",
+      "gold_source": "19_设备维修与报障制度.md",
+      "gold_refs": [{"title": "19_设备维修与报障制度.md", "contains": "先确认数据备份和业务资料移交"}],
+      "expected_refusal": false,
+      "tags": ["设备", "数据安全"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 15,
+      "question": "谁可以对外发布事件信息？",
+      "reference_answer": "对外沟通由指定发言人负责；员工不得在社交媒体发布未经确认的事件信息，涉及客户通知时按合同和适用法律执行。",
+      "gold_source": "20_安全事件响应预案.md",
+      "gold_refs": [{"title": "20_安全事件响应预案.md", "contains": "对外沟通由指定发言人负责"}],
+      "expected_refusal": false,
+      "tags": ["安全事件", "沟通"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 16,
+      "question": "技术恢复演练多久一次？",
+      "reference_answer": "每半年至少开展一次桌面演练，每年至少开展一次技术恢复演练；演练结束后形成问题清单、责任人和整改期限。",
+      "gold_source": "20_安全事件响应预案.md",
+      "gold_refs": [{"title": "20_安全事件响应预案.md", "contains": "每年至少开展一次技术恢复演练"}],
+      "expected_refusal": false,
+      "tags": ["安全事件", "演练"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 17,
+      "question": "事件证据能不能直接删日志？",
+      "reference_answer": "不得随意格式化设备或删除日志；应记录关键操作时间、操作者、系统日志和文件哈希，证据访问应受控并保留审计记录。",
+      "gold_source": "20_安全事件响应预案.md",
+      "gold_refs": [{"title": "20_安全事件响应预案.md", "contains": "不得随意格式化设备或删除日志"}],
+      "expected_refusal": false,
+      "tags": ["安全事件", "证据"],
+      "difficulty": "难"
+    },
+    {
+      "seq": 18,
+      "question": "公司有没有班车？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 19,
+      "question": "员工的年终奖怎么计算？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 20,
+      "question": "产品支持哪些支付方式？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 21,
+      "question": "员工可以申请远程办公吗？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 22,
+      "question": "公司提供免费午餐吗？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 23,
+      "question": "员工可以带宠物上班吗？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    }
+  ]
+}

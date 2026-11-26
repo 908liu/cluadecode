@@ -1,0 +1,130 @@
+{
+  "id": "company",
+  "name": "公司制度评测集 v1",
+  "description": "12 条用例：10 条可回答 + 2 条不可回答，覆盖员工手册、售后、SLA、备份、采购、发布、安全等制度",
+  "version": "v1",
+  "rubric_version": "v1",
+  "prompt_version": "v1",
+  "cases": [
+    {
+      "seq": 1,
+      "question": "公司标准工作时间是几点到几点？",
+      "reference_answer": "周一至周五 09:00—18:00，午休 12:00—13:00。",
+      "gold_source": "公司员工手册",
+      "gold_refs": [{"title": "01_公司员工手册.md", "contains": "标准工作时间为周一至周五 09:00—18:00"}],
+      "expected_refusal": false,
+      "tags": ["考勤", "工作时间"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 2,
+      "question": "年假需要提前多久申请？",
+      "reference_answer": "至少提前 3 个工作日申请。",
+      "gold_source": "公司员工手册",
+      "gold_refs": [{"title": "01_公司员工手册.md", "contains": "年假需至少提前 3 个工作日申请"}],
+      "expected_refusal": false,
+      "tags": ["考勤", "请假"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 3,
+      "question": "七天无理由退货从什么时候开始计算？",
+      "reference_answer": "自签收次日起七个自然日内。",
+      "gold_source": "产品退换货政策",
+      "gold_refs": [{"title": "02_产品退换货政策.md", "contains": "自签收次日起七个自然日内可申请无理由退货"}],
+      "expected_refusal": false,
+      "tags": ["售后", "退货"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 4,
+      "question": "质量问题退款通常多久发起？",
+      "reference_answer": "仓库签收并完成验收后，通常 3—5 个工作日内发起退款。",
+      "gold_source": "产品退换货政策",
+      "gold_refs": [{"title": "02_产品退换货政策.md", "contains": "通常在 3—5 个工作日内发起退款"}],
+      "expected_refusal": false,
+      "tags": ["售后", "退款"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 5,
+      "question": "云主机月度服务可用性目标是多少？",
+      "reference_answer": "99.9%。",
+      "gold_source": "云平台服务等级协议",
+      "gold_refs": [{"title": "03_云平台服务等级协议.md", "contains": "云主机月度服务可用性目标为 99.9%"}],
+      "expected_refusal": false,
+      "tags": ["SLA", "可用性"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 6,
+      "question": "生产数据库每天几点执行全量备份？",
+      "reference_answer": "每日 02:00。",
+      "gold_source": "数据库备份与恢复规范",
+      "gold_refs": [{"title": "04_数据库备份与恢复规范.md", "contains": "生产数据库每日 02:00 执行全量备份"}],
+      "expected_refusal": false,
+      "tags": ["备份", "数据库"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 7,
+      "question": "核心订单系统的 RTO 和 RPO 分别是多少？",
+      "reference_answer": "RTO 为 2 小时，RPO 为 15 分钟。",
+      "gold_source": "数据库备份与恢复规范",
+      "gold_refs": [{"title": "04_数据库备份与恢复规范.md", "contains": "恢复时间目标（RTO）为 2 小时"}],
+      "expected_refusal": false,
+      "tags": ["备份", "RTO", "RPO"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 8,
+      "question": "单笔 5,000 元至 50,000 元的采购由谁审批？",
+      "reference_answer": "由部门总监和财务审批。",
+      "gold_source": "采购审批流程",
+      "gold_refs": [{"title": "10_采购审批流程.md", "contains": "5,000 元至 50,000 元由部门总监和财务审批"}],
+      "expected_refusal": false,
+      "tags": ["采购", "审批"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 9,
+      "question": "新版本灰度发布第一步开放多少流量？",
+      "reference_answer": "先向 5% 流量开放，观察至少 15 分钟。",
+      "gold_source": "项目发布与回滚规范",
+      "gold_refs": [{"title": "11_项目发布与回滚规范.md", "contains": "新版本先向 5% 流量开放"}],
+      "expected_refusal": false,
+      "tags": ["发布", "灰度"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 10,
+      "question": "安全事件桌面演练多久开展一次？",
+      "reference_answer": "每半年至少开展一次。",
+      "gold_source": "安全事件响应预案",
+      "gold_refs": [{"title": "20_安全事件响应预案.md", "contains": "每半年至少开展一次桌面演练"}],
+      "expected_refusal": false,
+      "tags": ["安全", "演练"],
+      "difficulty": "易"
+    },
+    {
+      "seq": 11,
+      "question": "公司年会在哪一天举办？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "中"
+    },
+    {
+      "seq": 12,
+      "question": "公司股票的代码是多少？",
+      "reference_answer": "",
+      "gold_source": "不可答",
+      "gold_refs": [],
+      "expected_refusal": true,
+      "tags": ["拒答"],
+      "difficulty": "难"
+    }
+  ]
+}

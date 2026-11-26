@@ -1,0 +1,50 @@
+[
+  {
+    "username": "liu",
+    "display_name": "liu",
+    "employee_no": "E1001",
+    "department": "平台研发部",
+    "annual_leave_total": 10.0,
+    "annual_leave_used": 4.5,
+    "annual_leave_remaining": 5.5,
+    "overtime_hours": 12.5,
+    "latest_expense": {
+      "amount": 320.5,
+      "status": "审批中",
+      "submitted_at": "2026-11-10",
+      "purpose": "客户现场支持差旅"
+    }
+  },
+  {
+    "username": "alice",
+    "display_name": "Alice",
+    "employee_no": "E1002",
+    "department": "产品部",
+    "annual_leave_total": 12.0,
+    "annual_leave_used": 6.0,
+    "annual_leave_remaining": 6.0,
+    "overtime_hours": 8.0,
+    "latest_expense": {
+      "amount": 128.0,
+      "status": "已通过",
+      "submitted_at": "2026-11-08",
+      "purpose": "部门培训"
+    }
+  },
+  {
+    "username": "bob",
+    "display_name": "Bob",
+    "employee_no": "E1003",
+    "department": "销售部",
+    "annual_leave_total": 8.0,
+    "annual_leave_used": 7.0,
+    "annual_leave_remaining": 1.0,
+    "overtime_hours": 3.0,
+    "latest_expense": {
+      "amount": 560.0,
+      "status": "已驳回",
+      "submitted_at": "2026-11-05",
+      "purpose": "客户招待"
+    }
+  }
+]

@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+**/.venv/
+.claude/settings.local.json
+backend/.venv/
+backend/data/
+frontend/node_modules/
+frontend/dist/
+data/
+*.log
+.tmp/
+__pycache__/
+.pytest_cache/
