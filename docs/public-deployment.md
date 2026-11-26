@@ -93,6 +93,8 @@ APP_MEM_LIMIT=1536m
 | `MODEL_HOST_ALLOWLIST` | 可选域名白名单，逗号分隔；白名单内的主机被视为受信任（可明确放行自建内网模型服务） |
 | `DATA_DIR_HOST` | 宿主机数据目录，必须属于 UID 10001 |
 | `APP_MEM_LIMIT` | app 容器内存上限；2C2G 用 `1536m`，4G 可调到 `3g` |
+| `MAX_NORMAL_USERS` | 普通账号总数上限，默认 10；管理员账号不计入 |
+| `REGISTER_RATE_LIMIT` / `REGISTER_RATE_WINDOW` | 每 IP 注册请求限流；压测时可临时调高，默认 5 次 / 60 秒 |
 
 ## 3.1 2C2G 服务器：本地构建镜像（推荐）
 
@@ -140,7 +142,7 @@ https://kb.example.com
 
 ### 创建第一个账号
 
-1. 打开 `/register` 注册首个账号。
+1. 打开 `/register` 注册首个账号；首个账号会获得管理员标记，管理员密码由注册时设置。
 2. 确认注册已自动关闭：
 
 ```bash
@@ -158,6 +160,8 @@ REGISTRATION_INVITE_CODE=<随机邀请码>
 ```bash
 docker compose up -d app
 ```
+
+管理员标记用于识别首个账号；当前版本尚无管理员后台或账号管理功能。若要压测注册，临时设置 `REGISTRATION_MODE=open`、`MAX_NORMAL_USERS=10` 和 `REGISTER_RATE_LIMIT=20`，然后执行 `docker compose up -d app`。压测账号达到上限后会被拒绝；压测结束后建议改回 `invite` 或 `first-user`。
 
 ## 5. 数据迁移（可选）
 

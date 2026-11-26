@@ -38,7 +38,23 @@ class Database:
 
         self._migrate_index_members()
         Base.metadata.create_all(bind=self.engine)
+        self._migrate_user_admin()
         self._migrate_rag_v2()
+
+    def _migrate_user_admin(self) -> None:
+        """Add the administrator marker and promote the earliest existing user."""
+        inspector = inspect(self.engine)
+        columns = {item["name"] for item in inspector.get_columns("users")}
+        if "is_admin" in columns:
+            return
+        with self.engine.begin() as connection:
+            connection.exec_driver_sql(
+                "ALTER TABLE users ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT 0"
+            )
+            connection.exec_driver_sql(
+                "UPDATE users SET is_admin = 1 "
+                "WHERE id = (SELECT id FROM users ORDER BY created_at, id LIMIT 1)"
+            )
 
     def _migrate_rag_v2(self) -> None:
         """Add v2 rerank/NDCG columns without rebuilding existing tables."""

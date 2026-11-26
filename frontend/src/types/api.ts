@@ -22,6 +22,7 @@ export interface AuthUser {
   id: string
   username: string
   display_name: string
+  is_admin: boolean
 }
 
 export interface LoginRequest {
@@ -43,6 +44,9 @@ export interface RegistrationStatus {
   mode: RegistrationMode
   registration_allowed: boolean
   invite_required: boolean
+  normal_users: number
+  max_normal_users: number
+  normal_user_slots_remaining: number
 }
 
 export interface RegisterRequest {

@@ -25,30 +25,48 @@ def _auth_payload(settings: Settings, user: User) -> dict:
     token, expires_in = create_token(settings, user.id)
     return {
         "access_token": token, "token_type": "bearer", "expires_in": expires_in,
-        "user": {"id": user.id, "username": user.username, "display_name": user.display_name},
+        "user": {
+            "id": user.id, "username": user.username,
+            "display_name": user.display_name, "is_admin": user.is_admin,
+        },
     }
 
 
-def _registration_allowed(settings: Settings, user_count: int) -> bool:
+def _registration_allowed(settings: Settings, user_count: int, normal_user_count: int) -> bool:
+    if user_count == 0:
+        if settings.registration_mode == "invite":
+            return bool(settings.registration_invite_code)
+        return settings.registration_mode in ("open", "first-user")
+    if normal_user_count >= settings.max_normal_users:
+        return False
     if settings.registration_mode == "open":
         return True
-    if settings.registration_mode == "first-user":
-        return user_count == 0
     if settings.registration_mode == "invite":
         return bool(settings.registration_invite_code)
     return False
+
+
+def _user_counts(db: Session) -> tuple[int, int]:
+    user_count = int(db.scalar(select(func.count(User.id))) or 0)
+    normal_user_count = int(
+        db.scalar(select(func.count(User.id)).where(User.is_admin.is_(False))) or 0
+    )
+    return user_count, normal_user_count
 
 
 @router.get("/registration-status")
 def registration_status(
     settings: Settings = Depends(get_settings), db: Session = Depends(get_db)
 ) -> dict:
-    count = int(db.scalar(select(func.count(User.id))) or 0)
+    count, normal_count = _user_counts(db)
     return ok({
         "registered": count > 0,
         "mode": settings.registration_mode,
-        "registration_allowed": _registration_allowed(settings, count),
+        "registration_allowed": _registration_allowed(settings, count, normal_count),
         "invite_required": settings.registration_mode == "invite",
+        "normal_users": normal_count,
+        "max_normal_users": settings.max_normal_users,
+        "normal_user_slots_remaining": max(0, settings.max_normal_users - normal_count),
     })
 
 
@@ -65,8 +83,11 @@ def register(
     if retry is not None:
         raise rate_limit_error(retry)
     limiter.hit(key)
-    count = int(db.scalar(select(func.count(User.id))) or 0)
-    if not _registration_allowed(settings, count):
+
+    # Serialize registration checks across concurrent requests so the configured cap is hard.
+    db.connection().exec_driver_sql("BEGIN IMMEDIATE")
+    count, normal_count = _user_counts(db)
+    if not _registration_allowed(settings, count, normal_count):
         raise ApiError(403, 40301, "注册已关闭", None)
     if settings.registration_mode == "invite":
         code = (payload.invite_code or "").strip()
@@ -80,6 +101,7 @@ def register(
     display_name = payload.display_name or payload.username[:32]
     user = User(
         id=new_id("u"), username=payload.username,
+        is_admin=count == 0,
         password_hash=hash_password(payload.password, settings.bcrypt_rounds),
         display_name=display_name[:32], created_at=utcnow_iso(),
     )
@@ -115,7 +137,10 @@ def login(
 
 @router.get("/me")
 def me(user: User = Depends(get_current_user)) -> dict:
-    return ok({"id": user.id, "username": user.username, "display_name": user.display_name})
+    return ok({
+        "id": user.id, "username": user.username,
+        "display_name": user.display_name, "is_admin": user.is_admin,
+    })
 
 
 @router.post("/logout")

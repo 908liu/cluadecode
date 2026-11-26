@@ -22,6 +22,7 @@ class User(Base):
     __table_args__ = (Index("uq_users_username_lower", func.lower(text("username")), unique=True),)
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     username: Mapped[str] = mapped_column(String(64), nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     display_name: Mapped[str] = mapped_column(String(32), nullable=False)

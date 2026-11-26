@@ -84,6 +84,7 @@ class Settings:
     frontend_dist: Path
     registration_mode: str
     registration_invite_code: str
+    max_normal_users: int
     block_private_upstreams: bool
     model_host_allowlist: tuple[str, ...]
     upload_rate_limit: int
@@ -169,6 +170,7 @@ class Settings:
             ).resolve(),
             registration_mode=registration_mode,
             registration_invite_code=(os.getenv("REGISTRATION_INVITE_CODE") or "").strip(),
+            max_normal_users=max(0, _int("MAX_NORMAL_USERS", 10)),
             block_private_upstreams=_bool("BLOCK_PRIVATE_UPSTREAM", app_env == "production"),
             model_host_allowlist=allowlist,
             upload_rate_limit=_int("UPLOAD_RATE_LIMIT", 10),
